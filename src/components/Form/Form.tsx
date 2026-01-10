@@ -5,7 +5,7 @@ import style from './Form.module.css'
 import Alert from "../Alert/Alert";
 
 type FormProps = {
-  fetchWeather: () => void
+  fetchWeather: (search: SearchType) => Promise<void>
 }
 
 function Form({fetchWeather} : FormProps) {
@@ -30,7 +30,7 @@ function Form({fetchWeather} : FormProps) {
       return
     }
 
-    fetchWeather()
+    fetchWeather(search)
   }
 
   return (
