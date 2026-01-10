@@ -1,17 +1,43 @@
+import { useState, type ChangeEvent } from "react";
+import type { SearchType } from "../../types";
 import { countries } from "../../data/countries";
 import style from './Form.module.css'
 
 function Form() {
+  const [search, setSearch] = useState<SearchType>({
+    city: '',
+    country: ''
+  })
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> ) => {
+    setSearch({
+      ...search,
+      [e.target.name] : e.target.value
+    })
+  }
+
   return (
     <form className={style.form}>
       <div className={style.field}>
         <label htmlFor="city">Ciudad:</label>
-        <input id="city" type="text" name="city" placeholder="Ciudad" />
+        <input 
+          id="city"
+          type="text"
+          name="city"
+          placeholder="Ciudad"
+          value={search.city}
+          onChange={handleChange}
+        />
       </div>
 
       <div className={style.field}>
         <label htmlFor="country">País:</label>
-        <select name="country" id="country">
+        <select
+          name="country"
+          id="country"
+          value={search.country}
+          onChange={handleChange}
+        >
           <option value="">-- Seleccione un País --</option>
           {countries.map((country) => (
             <option key={country.code} value={country.code}>
