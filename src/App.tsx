@@ -1,4 +1,5 @@
 import style from './App.module.css'
+import Form from './components/Form/Form'
 
 function App() {
 
@@ -7,7 +8,7 @@ function App() {
       <h1 className={style.title}>Buscar Clima</h1>
 
       <div className={style.container}>
-        <p>1</p>
+        <Form />
         <p>2</p>
       </div>
     </>
