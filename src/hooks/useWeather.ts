@@ -1,5 +1,18 @@
 import axios from 'axios'
+import { z } from 'zod'
 import type { SearchType } from '../types'
+
+// Zod
+const Weather = z.object({
+  name: z.string(),
+  main: z.object({
+    temp: z.number(),
+    temp_max: z.number(),
+    temp_min: z.number()
+  })
+})
+
+type Weather = z.infer<typeof Weather>
 
 export default function useWeather() {
   const fetchWeather = async (search : SearchType) => {
@@ -14,9 +27,13 @@ export default function useWeather() {
 
       const weathertUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${appId}`
 
+      // zod
       const { data: weatherResult } = await axios(weathertUrl)
+      const result = Weather.safeParse(weatherResult)
 
-      console.log(weatherResult)
+      if (result.success) {
+        console.log(result.data.name)
+      }
 
     } catch (error) {
       console.log(error)
