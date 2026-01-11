@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { z } from 'zod'
 import type { SearchType } from '../types'
+import { useState } from 'react'
 
 // Zod
 const Weather = z.object({
@@ -12,9 +13,18 @@ const Weather = z.object({
   })
 })
 
-type Weather = z.infer<typeof Weather>
+export type Weather = z.infer<typeof Weather>
 
 export default function useWeather() {
+  const [weather, setWeather] = useState<Weather>({
+    name: '',
+    main: {
+      temp: 0,
+      temp_max: 0,
+      temp_min: 0
+    }
+  })
+
   const fetchWeather = async (search : SearchType) => {
     const appId = import.meta.env.VITE_API_KEY
 
@@ -32,7 +42,7 @@ export default function useWeather() {
       const result = Weather.safeParse(weatherResult)
 
       if (result.success) {
-        console.log(result.data.name)
+        setWeather(result.data)
       }
 
     } catch (error) {
@@ -41,6 +51,7 @@ export default function useWeather() {
   }
 
   return {
+    weather,
     fetchWeather
   }
 }
